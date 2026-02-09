@@ -1,4 +1,4 @@
-import styles from './WeatherLoading.module.css'
+import styles from './WeatherDetail.module.css'
 
 export default function WeatherLoading() {
     return (
