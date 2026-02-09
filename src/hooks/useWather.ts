@@ -52,7 +52,10 @@ export default function useWeather() {
   const fetchWeather = async (formData: FormData): Promise<void> => {
     try {
       setLoading(true)
-      const apiKey = import.meta.env.VITE_OPEN_WEATHER_API_KEY
+      let apiKey = import.meta.env.VITE_OPEN_WEATHER_API_KEY as string | undefined
+      if (apiKey && apiKey.includes('=')) {
+        apiKey = apiKey.split('=').pop()?.trim()
+      }
       if (!apiKey) {
         console.error('Falta la API Key de OpenWeather (OPEN_WEATHER_API_KEY)')
         setWeather({
