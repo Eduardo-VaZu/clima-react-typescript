@@ -54,11 +54,23 @@ export default function useWeather() {
       setLoading(true)
       const apiKey = import.meta.env.VITE_OPEN_WEATHER_API_KEY
       if (!apiKey) {
-        throw new Error('Falta la API Key de OpenWeather (OPEN_WEATHER_API_KEY)')
+        console.error('Falta la API Key de OpenWeather (OPEN_WEATHER_API_KEY)')
+        setWeather({
+          name: '',
+          main: { temp: 0, temp_min: 0, temp_max: 0 }
+        })
+        return
       }
 
       const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${formData.city},${formData.country}&appid=${apiKey}`
       const geoData = await axios.get(geoUrl)
+      if (!Array.isArray(geoData.data) || geoData.data.length === 0) {
+        setWeather({
+          name: '',
+          main: { temp: 0, temp_min: 0, temp_max: 0 }
+        })
+        return
+      }
       const { lat, lon } = geoData.data[0]
 
       const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
@@ -84,7 +96,10 @@ export default function useWeather() {
 
     } catch (error) {
       console.error(error)
-      throw error
+      setWeather({
+        name: '',
+        main: { temp: 0, temp_min: 0, temp_max: 0 }
+      })
     } finally {
       setLoading(false)
     }
