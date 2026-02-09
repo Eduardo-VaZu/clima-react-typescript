@@ -57,7 +57,7 @@ export default function useWeather() {
         throw new Error('Falta la API Key de OpenWeather (OPEN_WEATHER_API_KEY)')
       }
 
-      const geoUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${formData.city},${formData.country}&appid=${apiKey}`
+      const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${formData.city},${formData.country}&appid=${apiKey}`
       const geoData = await axios.get(geoUrl)
       const { lat, lon } = geoData.data[0]
 
